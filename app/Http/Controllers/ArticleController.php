@@ -4,16 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
-use Illuminate\Pagination\PaginationServiceProvider;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use Storage;
 
 class ArticleController extends Controller
 {
     public function index()
     {
         $article = Article::all();
-        return view('Admin.Home', [
+        return view('Admin.Berita.Home', [
             'title' => 'List Article',
             'Article' => $article,
         ]);
@@ -22,7 +20,7 @@ class ArticleController extends Controller
     public function createBerita()
     {
         $article = Article::all();
-        return view('Admin.createArticle',[
+        return view('Admin.Berita.createArticle',[
             'title' => 'List Article',
             'Article' => $article,
         ]);
@@ -44,16 +42,47 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::find($id);
-        if (Storage::exists($article->image)){
-            Storage::delete($article->image);
+        if (Storage::exists($article->photo)){
+            Storage::delete($article->photo);
         }
         $article->delete();
 
         return redirect()->back();
     }
 
-    public function edit()
+    public function edit($id)
     {
+        $article = Article::find($id);
+        return view('Admin.Berita.editArticle', [
+            'title' => 'Edit Berita' . $id,
+            'Article' => $article,
+        ]);
+    }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'judul'=>'required|min:6',
+            'content'=>'required|min:50',
+        ]);
+
+        $article = Article::find($id);
+
+        $photo = $article->photo;
+
+        if ($request->hasFile('photo')) {
+            if (Storage::exists($article->photo)) {
+                Storage::delete($article->photo);
+            }
+            $photo = $request->file('photo')->store('GambarBerita');
+        }
+
+        $article->id = auth()->id();
+        $article->title = $request->title;
+        $article->article = $request->article;
+
+        $article->save();
+
+        return redirect()->route('Admin.Berita.Home')->with('info', 'Data Terupdate');
     }
 }

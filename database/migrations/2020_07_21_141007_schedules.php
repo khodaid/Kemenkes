@@ -13,9 +13,12 @@ class Schedules extends Migration
      */
     public function up()
     {
-        Schema::create('Schedules', function(Blueprint $table){
-            $table->string('namaAgenda');
-            // $table->string('')
+        Schema::create('Schedule',function (Blueprint $table){
+            $table->increments('id');
+            $table->string('nama_acara',75);
+            $table->date('tanggal');
+            $table->string('tempat',100);
+            $table->timestamps();
         });
     }
 
@@ -26,6 +29,6 @@ class Schedules extends Migration
      */
     public function down()
     {
-        //
+
     }
 }

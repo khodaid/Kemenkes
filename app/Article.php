@@ -16,7 +16,7 @@ class Article extends Model
     public function getImage()
     {
         if ($this->photo && $this->photo !== "") {
-            return asset('storage/' . $this->photo);
+            return asset('Gambar/' . $this->photo);
         }
 
         return "https://dummyimage.com/750x300/000/fff&text=Gambar+Kosong";

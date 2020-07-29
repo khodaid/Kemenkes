@@ -29,10 +29,9 @@ type="text/javascript"></script> --}}
             <td>{{$article->id}}</td>
             <td>{{$article->title}}</td>
             <td>{{str_limit($article->article,50)}}</td>
-            {{-- <td>{{$article->photo}}</td> --}}
-            <td><img src="{{ $article->getImage()}}" alt="" height="50px"></td>
+            <td><img src="{{ $article->getImage() }}" alt="" height="50px"></td>
             <td><a class="btn btn-danger" href="{{route('hapusBerita', $article)}}">Hapus</a></td>
-            <td><a class="btn btn-success" href="">Edit</a></td>
+            <td><a class="btn btn-success" href="{{route('editBerita', $article)}}">Edit</a></td>
         </tr>
     </tbody>
 
